@@ -1,0 +1,31 @@
+{
+  "name": "fastify-server-for-lazy-developers",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx src/index.ts -w src",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Puppo/fastify-server-for-lazy-developers.git"
+  },
+  "keywords": [
+    "fastify",
+    "node"
+  ],
+  "author": "Luca Del Puppo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Puppo/fastify-server-for-lazy-developers/issues"
+  },
+  "homepage": "https://github.com/Puppo/fastify-server-for-lazy-developers#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  }
+}
