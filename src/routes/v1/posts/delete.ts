@@ -1,23 +1,24 @@
-import {FastifyInstance} from "fastify";
+import {FastifyPluginAsyncTypebox} from "@fastify/type-provider-typebox";
 import db from "../../../db/index.ts";
+import {PostSchemas} from "../../../schemas/index.ts";
 
-export default async function (app: FastifyInstance) {
-  app.delete<{
-    Params: {
-      postId: string;
+const routes: FastifyPluginAsyncTypebox = async (app) => {
+  app.delete('/:postId', {
+    schema: {
+      params: PostSchemas.Params.PostId,
+      response: {
+        200: PostSchemas.Bodies.Post,
+      }
     }
-  }>('/:postId', async (request, reply) => {
-    const postId = parseInt(request.params.postId, 10);
+  }, async (request, reply) => {
+    const {postId} = request.params;
     const post = db.posts.find((p) => p.id === postId);
-    if (!post) {
-      reply.status(404);
-      return {
-        statusCode: 404,
-        error: 'Not Found',
-        message: `Post with id ${postId} not found`,
-      };
-    }
+    if (!post)
+      return reply.status(204).send();
+
     db.posts = db.posts.filter((p) => p.id !== postId);
     return post;
   });
 }
+
+export default routes;

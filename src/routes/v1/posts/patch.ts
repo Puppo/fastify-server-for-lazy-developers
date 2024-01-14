@@ -1,33 +1,28 @@
-import {FastifyInstance} from "fastify";
+import {FastifyPluginAsyncTypebox} from "@fastify/type-provider-typebox";
 import db from "../../../db/index.ts";
+import {PostSchemas} from "../../../schemas/index.ts";
 
-export default async function (app: FastifyInstance) {
-  app.patch<{
-    Body: Partial<{
-      title: string;
-      content: string;
-    }>,
-    Params: {
-      postId: string;
+const routes: FastifyPluginAsyncTypebox = async (app) => {
+  app.patch('/:postId', {
+    schema: {
+      params: PostSchemas.Params.PostId,
+      body: PostSchemas.Bodies.UpdatePost,
+      response: {
+        200: PostSchemas.Bodies.Post,
+      }
     }
-  }>('/:postId', async (request, reply) => {
-    const postId = parseInt(request.params.postId, 10);
+  
+  }, async (request, reply) => {
+    const {postId} = request.params;
     const post = db.posts.find((p) => p.id === postId);
-    if (!post) {
-      reply.status(404);
-      return {
-        statusCode: 404,
-        error: 'Not Found',
-        message: `Post with id ${postId} not found`,
-      };
-    }
+    if (!post)
+      throw app.httpErrors.notFound();
 
-
-    const {title, content} = request.body;
     const updatedPost = {
       ...post,
       ...request.body,
-      id: post.id,
+      updatedAt: new Date(),
+      id: postId,
     };
     db.posts = db.posts.map((p) => {
       if (p.id === postId) {
@@ -38,3 +33,5 @@ export default async function (app: FastifyInstance) {
     return updatedPost;
   });
 }
+
+export default routes;
