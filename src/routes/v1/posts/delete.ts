@@ -1,5 +1,4 @@
 import {FastifyPluginAsyncTypebox} from "@fastify/type-provider-typebox";
-import db from "../../../db/index.ts";
 import {PostSchemas} from "../../../schemas/index.ts";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
@@ -10,13 +9,20 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         200: PostSchemas.Bodies.Post,
       }
     }
-  }, async (request, reply) => {
-    const {postId} = request.params;
-    const post = db.posts.find((p) => p.id === postId);
+  }, async ({params: { postId }}, reply) => {
+    const post = await app.db
+      .deleteFrom('posts')
+      .where('id', '=', postId)
+      .returning([
+        'id',
+        'title',
+        'content',
+      ])
+      .executeTakeFirst();
+
     if (!post)
       return reply.status(204).send();
 
-    db.posts = db.posts.filter((p) => p.id !== postId);
     return post;
   });
 }

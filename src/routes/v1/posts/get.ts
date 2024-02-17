@@ -1,5 +1,4 @@
 import {FastifyPluginAsyncTypebox} from '@fastify/type-provider-typebox';
-import db from "../../../db/index.ts";
 import CommonSchemas from '../../../schemas/commons/index.ts';
 import {PostSchemas} from "../../../schemas/index.ts";
 
@@ -13,7 +12,15 @@ const route: FastifyPluginAsyncTypebox = async (app) => {
     }
   }, async (request) => {
     const {postId} = request.params;
-    const post = db.posts.find(post => post.id === postId);
+    const post = await app.db
+      .selectFrom('posts')
+      .where('id', '=', postId)
+      .select([
+        'id',
+        'title',
+        'content',
+      ])
+      .executeTakeFirst();
     if (!post)
       throw app.httpErrors.notFound();
     
@@ -27,10 +34,31 @@ const route: FastifyPluginAsyncTypebox = async (app) => {
         200: PostSchemas.Bodies.PostsPaginated,
       }
     }
-  }, ({ query: { offset, limit } }) => ({
-    count: db.posts.length,
-    data: db.posts.slice(offset, offset + limit),
-  }));
+  }, async ({ query: { offset, limit } }) => {
+    const countQuery = app
+      .db
+      .selectFrom('posts')
+      .select(({ fn }) =>
+        [fn.count<number>('id').as('count')])
+      .executeTakeFirst();
+    const postsQuery = app
+      .db
+      .selectFrom('posts')
+      .offset(offset)
+      .limit(limit)
+      .select([
+        'id',
+        'title',
+        'content',
+      ])
+      .orderBy('created_at', 'asc')
+      .execute();
+    const [countResult, postsResult] = await Promise.all([countQuery, postsQuery]);
+    return {
+      count: countResult?.count ?? 0,
+      data: postsResult,
+    }
+  });
 }
 
 export default route;

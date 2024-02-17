@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:${POSTGRES_VERSION}
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    volumes:
+      - db:/var/lib/postgresql/data
+    env_file:
+      - .env
+    
+volumes:
+  db:
+    driver: local

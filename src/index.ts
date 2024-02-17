@@ -7,6 +7,13 @@ async function run() {
       transport: {
         target: 'pino-pretty'
       },
+      redact: {
+        paths: [
+          '[*].password',
+          '[*].user',
+        ],
+        censor: "***"
+      }
     },
   });
   app.register(buildServer)

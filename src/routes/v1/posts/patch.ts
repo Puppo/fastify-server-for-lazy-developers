@@ -1,5 +1,5 @@
 import {FastifyPluginAsyncTypebox} from "@fastify/type-provider-typebox";
-import db from "../../../db/index.ts";
+import {sql} from "kysely";
 import {PostSchemas} from "../../../schemas/index.ts";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
@@ -12,24 +12,25 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
       }
     }
   
-  }, async (request, reply) => {
+  }, async (request) => {
     const {postId} = request.params;
-    const post = db.posts.find((p) => p.id === postId);
-    if (!post)
+    const updatedPost = app
+      .db
+      .updateTable('posts')
+      .set({
+        ...request.body,
+        updated_at: () => sql`CURRENT_TIMESTAMP`,
+      })
+      .where('id', '=', postId)
+      .returning([
+        'id',
+        'title',
+        'content',
+      ])
+      .executeTakeFirst();
+    if (!updatedPost)
       throw app.httpErrors.notFound();
 
-    const updatedPost = {
-      ...post,
-      ...request.body,
-      updatedAt: new Date(),
-      id: postId,
-    };
-    db.posts = db.posts.map((p) => {
-      if (p.id === postId) {
-        return updatedPost;
-      }
-      return p;
-    });
     return updatedPost;
   });
 }
