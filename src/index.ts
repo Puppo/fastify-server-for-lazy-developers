@@ -1,8 +1,10 @@
 import fastify from "fastify";
-import buildServer from "./server.ts";
+import qs from "qs";
+import buildServer from "./infrastructure/server.ts";
 
 async function run() {
   const app = fastify({
+    querystringParser: (str) => qs.parse(str),
     logger: {
       transport: {
         target: 'pino-pretty'

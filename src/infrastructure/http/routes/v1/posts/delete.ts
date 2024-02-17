@@ -9,22 +9,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         200: PostSchemas.Bodies.Post,
       }
     }
-  }, async ({params: { postId }}, reply) => {
-    const post = await app.db
-      .deleteFrom('posts')
-      .where('id', '=', postId)
-      .returning([
-        'id',
-        'title',
-        'content',
-      ])
-      .executeTakeFirst();
-
-    if (!post)
-      return reply.status(204).send();
-
-    return post;
-  });
+  }, ({params: { postId }}, reply) => app.postsService.delete(postId));
 }
 
 export default routes;

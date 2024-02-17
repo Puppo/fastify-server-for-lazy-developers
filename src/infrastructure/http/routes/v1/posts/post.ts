@@ -10,18 +10,8 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
       }
     }
   }, async (request, reply) => {
-    const newPost = await app
-    .db
-    .insertInto('posts')
-    .values(request.body)
-    .returning([
-      'id',
-      'title',
-      'content',
-    ])
-    .executeTakeFirst()
-
-    reply.status(201).send(newPost);
+    const newPost = await app.postsService.create(request.body);
+    return reply.status(201).send(newPost);
   });
 }
 
