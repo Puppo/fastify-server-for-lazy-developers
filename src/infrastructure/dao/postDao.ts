@@ -1,7 +1,14 @@
 import {Kysely, SelectExpression} from 'kysely';
 import {DB} from 'kysely-codegen';
-import {PaginatedResult, Pagination, SortBy} from '../../application/commons/models.ts';
-import {CreatePost, IPostRepository, Post, UpdatePost} from '../../application/index.ts';
+import {
+  CreatePost,
+  IPostRepository,
+  PaginatedResult,
+  Pagination,
+  Post,
+  SortBy,
+  UpdatePost
+} from '../../application/index.ts';
 import {buildSortBy} from './utils.ts';
 
 export class PostDao implements IPostRepository {
