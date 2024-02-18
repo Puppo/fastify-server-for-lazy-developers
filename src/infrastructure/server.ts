@@ -9,7 +9,13 @@ const __dirname = dirname(__filename)
 
 export default async function (app: FastifyInstance) {
   app.register(import('@fastify/sensible'));
-  await app.register(autoLoad, {
+
+  app.register(import('@fastify/swagger'));
+  app.register(import('@fastify/swagger-ui'), {
+    routePrefix: '/documentation'
+  });
+
+  app.register(autoLoad, {
     dir: join(__dirname, 'plugins'),
     forceESM: true,
   });
@@ -22,7 +28,7 @@ export default async function (app: FastifyInstance) {
     options: { prefix: '/api' },
     forceESM: true,
   });
-  
+
   app.setErrorHandler(errorHandler);
 
   app.ready(() => {

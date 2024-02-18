@@ -5,6 +5,7 @@ import {decodeSort} from '../../../utils/decodeSort.ts';
 const route: FastifyPluginAsyncTypebox = async (app) => {
   app.get('/:postId', {
     schema: {
+      tags: ["Posts"],
       params: PostSchemas.Params.PostId,
       response: {
         200: PostSchemas.Bodies.Post,
@@ -14,6 +15,7 @@ const route: FastifyPluginAsyncTypebox = async (app) => {
 
   app.get('/', {
     schema: {
+      tags: ["Posts"],
       querystring: PostSchemas.Queries.PostsQuery,
       response: {
         200: PostSchemas.Bodies.PostsPaginated,

@@ -4,6 +4,7 @@ import {PostSchemas} from "../../../schemas/index.ts";
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.delete('/:postId', {
     schema: {
+      tags: ["Posts"],
       params: PostSchemas.Params.PostId,
       response: {
         200: PostSchemas.Bodies.Post,
