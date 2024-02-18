@@ -14,7 +14,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
   
   }, async (request) => {
     const {postId} = request.params;
-    const updatedPost = app
+    const updatedPost = await app
       .db
       .updateTable('posts')
       .set({
