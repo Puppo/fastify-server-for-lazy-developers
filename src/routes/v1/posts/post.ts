@@ -21,6 +21,8 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
     };
     db.posts.push(post);
 
+    reply.status(201);
+
     return post;
   });
 }
