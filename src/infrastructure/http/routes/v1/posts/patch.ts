@@ -1,5 +1,5 @@
-import {FastifyPluginAsyncTypebox} from "@fastify/type-provider-typebox";
-import {PostSchemas} from "../../../schemas/index.ts";
+import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
+import { PostSchemas } from "../../../schemas/index.js";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.patch('/:postId', {
@@ -12,7 +12,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
       }
     }
   
-  }, async (request) => app.postsService.update(request.params.postId, request.body));
+  }, (request) => app.postsService.update(request.params.postId, request.body));
 }
 
 export default routes;

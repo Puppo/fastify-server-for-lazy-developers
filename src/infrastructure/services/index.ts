@@ -1,7 +1,7 @@
 import fp from 'fastify-plugin';
-import {PostService} from '../../application/index.js';
-import {IPostRepository} from "../../application/posts/index.js";
-import {PostDao} from '../dao/postDao.js';
+import { PostService } from '../../application/index.js';
+import { IPostRepository } from "../../application/posts/index.js";
+import { PostDao } from '../dao/postDao.js';
 
 declare module 'fastify' {
   interface FastifyInstance {

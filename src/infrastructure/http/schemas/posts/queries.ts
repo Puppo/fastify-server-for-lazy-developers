@@ -1,5 +1,5 @@
-import {Type} from "@sinclair/typebox";
-import PaginationSchema from "../commons/index.ts";
+import { Type } from "@sinclair/typebox";
+import PaginationSchema from "../commons/index.js";
 
 export const PostsQuery = Type.Partial(
   Type.Intersect([

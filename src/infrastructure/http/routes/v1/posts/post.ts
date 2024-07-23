@@ -1,5 +1,5 @@
-import {FastifyPluginAsyncTypebox} from "@fastify/type-provider-typebox";
-import {PostSchemas} from "../../../schemas/index.ts";
+import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
+import { PostSchemas } from "../../../schemas/index.js";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.post('/', {

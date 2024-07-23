@@ -1,4 +1,4 @@
-import {SortBy} from "../../../application/commons/models.ts";
+import { SortBy } from "../../../application/commons/models.js";
 
 type Sort<T extends string> = `${T}.${'asc' | 'desc'}` | T;
 

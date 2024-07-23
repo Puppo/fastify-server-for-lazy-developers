@@ -1,5 +1,5 @@
-import {PaginatedResult, Pagination, SortBy} from "../commons/models.ts";
-import {CreatePost, Post, UpdatePost} from "./models.ts";
+import { PaginatedResult, Pagination, SortBy } from "../commons/models.js";
+import { CreatePost, Post, UpdatePost } from "./models.js";
 
 export interface IPostRepository {
   create(post: CreatePost): Promise<Post>;

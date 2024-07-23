@@ -1,5 +1,5 @@
-import * as Bodies from './bodies.ts';
-import * as Queries from './queries.ts';
+import * as Bodies from './bodies.js';
+import * as Queries from './queries.js';
 
 export default {
   Queries,

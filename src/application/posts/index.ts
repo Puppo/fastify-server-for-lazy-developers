@@ -1,4 +1,4 @@
-export * from "./models.ts";
-export type {IPostRepository} from "./postRepository.ts";
-export {PostService} from "./postsService.ts";
+export * from "./models.js";
+export type { IPostRepository } from "./postRepository.js";
+export { PostService } from "./postsService.js";
 

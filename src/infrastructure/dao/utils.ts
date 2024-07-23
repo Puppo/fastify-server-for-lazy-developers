@@ -1,7 +1,7 @@
-import {snakeCase} from 'change-case';
-import {OrderByExpression} from 'kysely';
-import {DB} from 'kysely-codegen';
-import {SortBy} from "../../application/index.ts";
+import { snakeCase } from 'change-case';
+import { OrderByExpression } from 'kysely';
+import { DB } from 'kysely-codegen';
+import { SortBy } from "../../application/index.js";
 
 export function buildSortBy<
   Table extends Exclude<keyof DB, 'schemaversion'>,

@@ -1,7 +1,7 @@
-import {NotFoundException} from "../commons/exceptions.ts";
-import {PaginatedResult, Pagination, SortBy} from "../commons/models.ts";
-import {CreatePost, Post, UpdatePost} from "./models.ts";
-import {IPostRepository} from "./postRepository.ts";
+import { NotFoundException } from "../commons/exceptions.js";
+import { PaginatedResult, Pagination, SortBy } from "../commons/models.js";
+import { CreatePost, Post, UpdatePost } from "./models.js";
+import { IPostRepository } from "./postRepository.js";
 
 export class PostService {
   constructor(protected readonly postRepository: IPostRepository) {}

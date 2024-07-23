@@ -1,5 +1,5 @@
-import {FastifyPluginAsyncTypebox} from "@fastify/type-provider-typebox";
-import {PostSchemas} from "../../../schemas/index.ts";
+import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
+import { PostSchemas } from "../../../schemas/index.js";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.delete('/:postId', {
@@ -10,7 +10,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         200: PostSchemas.Bodies.Post,
       }
     }
-  }, ({params: { postId }}, reply) => app.postsService.delete(postId));
+  }, ({params: { postId }}) => app.postsService.delete(postId));
 }
 
 export default routes;

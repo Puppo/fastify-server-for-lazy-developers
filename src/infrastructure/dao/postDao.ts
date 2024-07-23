@@ -1,5 +1,6 @@
-import {Kysely, SelectExpression} from 'kysely';
-import {DB} from 'kysely-codegen';
+import { Kysely, SelectExpression } from 'kysely';
+import { DB } from 'kysely-codegen';
+import { prop } from 'rambda';
 import {
   CreatePost,
   IPostRepository,
@@ -8,8 +9,8 @@ import {
   Post,
   SortBy,
   UpdatePost
-} from '../../application/index.ts';
-import {buildSortBy} from './utils.ts';
+} from '../../application/index.js';
+import { buildSortBy } from './utils.js';
 
 export class PostDao implements IPostRepository {
   protected readonly DEFAULT_SELECT_FIELDS = [
@@ -35,7 +36,9 @@ export class PostDao implements IPostRepository {
       .selectFrom('posts')
       .select(({ fn }) =>
         [fn.count<number>('id').as('count')])
-      .executeTakeFirst();
+      .executeTakeFirst()
+      .then(prop('count'))
+      .then(Number);
     
     const postsQuery = this
       .db
@@ -48,7 +51,7 @@ export class PostDao implements IPostRepository {
 
     const [countResult, postsResult] = await Promise.all([countQuery, postsQuery]);
     return {
-      count: countResult?.count ?? 0,
+      count: countResult ?? 0,
       data: postsResult
     };
   }

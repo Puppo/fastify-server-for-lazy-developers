@@ -1,4 +1,4 @@
-import {FastifyInstance} from "fastify";
+import { FastifyInstance } from "fastify";
 
 export default async function (app: FastifyInstance) {
   app.get("/", {
@@ -6,6 +6,8 @@ export default async function (app: FastifyInstance) {
       tags: ["Hello"],
     }
   }, async (request, reply) => {
-    return "world";
+    return {
+      message: "Hello world"
+    };
   });
 }

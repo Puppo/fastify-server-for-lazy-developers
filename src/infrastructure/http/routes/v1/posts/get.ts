@@ -1,6 +1,6 @@
-import {FastifyPluginAsyncTypebox} from '@fastify/type-provider-typebox';
-import {PostSchemas} from "../../../schemas/index.ts";
-import {decodeSort} from '../../../utils/decodeSort.ts';
+import { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
+import { PostSchemas } from "../../../schemas/index.js";
+import { decodeSort } from '../../../utils/decodeSort.js';
 
 const route: FastifyPluginAsyncTypebox = async (app) => {
   app.get('/:postId', {
@@ -21,7 +21,7 @@ const route: FastifyPluginAsyncTypebox = async (app) => {
         200: PostSchemas.Bodies.PostsPaginated,
       }
     },
-  }, async ({ query: { offset, limit, sort } }) => app.postsService.findAll({ offset: offset!, limit: limit! }, decodeSort(sort!)));
+  }, ({ query: { offset, limit, sort } }) => app.postsService.findAll({ offset: offset!, limit: limit! }, decodeSort(sort!)));
 }
 
 export default route;

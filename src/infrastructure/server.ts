@@ -1,8 +1,8 @@
 import autoLoad from "@fastify/autoload";
-import {FastifyInstance} from 'fastify';
-import {dirname, join} from 'path';
-import {fileURLToPath} from 'url';
-import {errorHandler} from "./http/errors/index.ts";
+import { FastifyInstance } from 'fastify';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
+import { errorHandler } from "./http/errors/index.js";
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
