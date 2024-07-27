@@ -1,5 +1,17 @@
-import { afterEach, beforeEach, describe, expect, Mocked, test, vi } from "vitest";
-import { IPostRepository, Post, PostService } from "../../src/application/index.js";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  Mocked,
+  test,
+  vi,
+} from "vitest";
+import {
+  IPostRepository,
+  Post,
+  PostService,
+} from "../../src/application/index.js";
 
 const mockPost: Post = {
   id: 1,
@@ -27,7 +39,7 @@ describe("PostService", () => {
 
   afterEach(() => {
     vi.resetAllMocks();
-  })
+  });
 
   describe("create", () => {
     test("should create a post", async () => {
@@ -44,7 +56,7 @@ describe("PostService", () => {
         title: "Post title",
         content: "Post content",
       });
-    })
+    });
   });
 
   describe("findAll", () => {
@@ -54,20 +66,26 @@ describe("PostService", () => {
         count: 1,
       });
 
-      const posts = await postService.findAll({
-        limit: 10,
-        offset: 0,
-      }, [['createdAt', 'asc']]);
+      const posts = await postService.findAll(
+        {
+          limit: 10,
+          offset: 0,
+        },
+        [["createdAt", "asc"]],
+      );
 
       expect(posts).toEqual({
         data: [mockPost],
         count: 1,
       });
       expect(mockedPostRepository.findAll).toHaveBeenCalledOnce();
-      expect(mockedPostRepository.findAll).toHaveBeenCalledWith({
-        limit: 10,
-        offset: 0,
-      }, [['createdAt', 'asc']]);
+      expect(mockedPostRepository.findAll).toHaveBeenCalledWith(
+        {
+          limit: 10,
+          offset: 0,
+        },
+        [["createdAt", "asc"]],
+      );
     });
   });
 
@@ -85,7 +103,9 @@ describe("PostService", () => {
     test("should throw an error if post not found", async () => {
       mockedPostRepository.findById.mockResolvedValue(undefined);
 
-      await expect(postService.findById(1)).rejects.toThrow("Post with id 1 not found");
+      await expect(postService.findById(1)).rejects.toThrow(
+        "Post with id 1 not found",
+      );
     });
   });
 
@@ -109,10 +129,12 @@ describe("PostService", () => {
     test("should throw an error if post not found", async () => {
       mockedPostRepository.update.mockResolvedValue(undefined);
 
-      await expect(postService.update(1, {
-        title: "Post title",
-        content: "Post content",
-      })).rejects.toThrow("Post with id 1 not found");
+      await expect(
+        postService.update(1, {
+          title: "Post title",
+          content: "Post content",
+        }),
+      ).rejects.toThrow("Post with id 1 not found");
     });
   });
 
@@ -127,5 +149,4 @@ describe("PostService", () => {
       expect(mockedPostRepository.delete).toHaveBeenCalledWith(1);
     });
   });
-
 });

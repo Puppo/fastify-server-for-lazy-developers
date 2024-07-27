@@ -1,7 +1,7 @@
 export type CreatePost = {
   title: string;
   content: string;
-}
+};
 
 export type UpdatePost = Partial<CreatePost>;
 

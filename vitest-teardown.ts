@@ -1,11 +1,9 @@
-import PgDockerController from './test/PgDockerController.js';
+import PgDockerController from "./test/PgDockerController.js";
 
 export async function setup() {
   await teardown();
 }
 
 export async function teardown() {
-  await Promise.all([
-    PgDockerController.cleanUp(),
-  ]);
+  await Promise.all([PgDockerController.cleanUp()]);
 }

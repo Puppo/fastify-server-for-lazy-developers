@@ -7,10 +7,11 @@ export const PostsQuery = Type.Partial(
     Type.Object({
       sort: Type.Array(
         Type.Union([
-          Type.TemplateLiteral('${id|title|content}'),
-          Type.TemplateLiteral('${id|title|content}.${asc|desc}')
-        ])
-      , { default: ['id.asc'] })
-    })
-  ])
+          Type.TemplateLiteral("${id|title|content}"),
+          Type.TemplateLiteral("${id|title|content}.${asc|desc}"),
+        ]),
+        { default: ["id.asc"] },
+      ),
+    }),
+  ]),
 );

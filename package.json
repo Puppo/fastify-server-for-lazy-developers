@@ -14,7 +14,9 @@
     "generate:db:types": "kysely-codegen",
     "pg-pull": "docker pull postgres:$(grep POSTGRES_VERSION .env | cut -d '=' -f2)-alpine",
     "pretest": "npm run pg-pull",
-    "test": "vitest"
+    "test": "vitest",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix"
   },
   "repository": {
     "type": "git",
@@ -49,6 +51,7 @@
     "rambda": "^9.2.1"
   },
   "devDependencies": {
+    "@eslint/js": "^9.8.0",
     "@types/dockerode": "^3.3.30",
     "@types/node": "^20.14.12",
     "@types/pg": "^8.11.6",
@@ -56,12 +59,22 @@
     "@vitest/coverage-v8": "^2.0.4",
     "case-anything": "^3.1.0",
     "dockerode": "^4.0.2",
+    "eslint": "^9.8.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "globals": "^15.8.0",
     "kysely-codegen": "^0.15.0",
+    "lefthook": "^1.7.9",
     "pino-pretty": "^11.2.1",
     "postgrator-cli": "^8.1.0",
+    "prettier": "3.3.3",
     "qs": "^6.12.3",
     "tsx": "^4.16.2",
     "typescript": "^5.5.4",
+    "typescript-eslint": "^7.17.0",
     "vitest": "^2.0.4"
+  },
+  "overrides": {
+    "eslint": "^9.8.0"
   }
 }

@@ -8,5 +8,4 @@ export type PaginatedResult<T> = {
   data: T[];
 };
 
-export type SortBy<T extends object> =
-  Array<[keyof T, ("asc" | "desc")?]>;
+export type SortBy<T extends object> = Array<[keyof T, ("asc" | "desc")?]>;

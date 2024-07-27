@@ -7,18 +7,15 @@ async function run() {
     querystringParser: (str) => qs.parse(str),
     logger: {
       transport: {
-        target: 'pino-pretty'
+        target: "pino-pretty",
       },
       redact: {
-        paths: [
-          '[*].password',
-          '[*].user',
-        ],
-        censor: "***"
-      }
+        paths: ["[*].password", "[*].user"],
+        censor: "***",
+      },
     },
   });
-  app.register(buildServer)
+  app.register(buildServer);
 
   try {
     await app.listen({

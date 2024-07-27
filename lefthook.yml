@@ -1,0 +1,6 @@
+pre-commit:
+  parallel: true
+  commands:
+    lint:
+      glob: "*.{ts}"
+      run: npm run lint:fix {staged_files}

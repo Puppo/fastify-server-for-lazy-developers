@@ -5,7 +5,7 @@ import {
   beforeEach,
   describe,
   expect,
-  test
+  test,
 } from "vitest";
 import { PostDao } from "../../../src/infrastructure/dao/postDao.js";
 import PgDockerController from "../../PgDockerController.js";
@@ -14,20 +14,20 @@ describe("postDao", () => {
   const pgDockerController = new PgDockerController();
   let postDao: PostDao;
 
-  beforeAll(() => pgDockerController.setup())
+  beforeAll(() => pgDockerController.setup());
 
   beforeEach(() => {
     postDao = new PostDao(pgDockerController.db);
   });
 
-  afterEach(() => pgDockerController.reset())
+  afterEach(() => pgDockerController.reset());
 
   describe("create", () => {
     test("should create a post", async () => {
       const postData = {
         title: "title",
-        content: "content"
-      }
+        content: "content",
+      };
 
       const post = await postDao.create(postData);
 
@@ -35,18 +35,17 @@ describe("postDao", () => {
         id: expect.any(Number),
         createdAt: expect.any(Date),
         updatedAt: expect.any(Date),
-        ...postData
+        ...postData,
       });
     });
   });
 
   describe("findAll", () => {
-
     beforeEach(async () => {
       for (let i = 0; i < 10; i++) {
         await postDao.create({
           title: `title ${i}`,
-          content: `content ${i}`
+          content: `content ${i}`,
         });
       }
     });
@@ -59,14 +58,17 @@ describe("postDao", () => {
           title: `title ${i}`,
           content: `content ${i}`,
           createdAt: expect.any(Date),
-          updatedAt: expect.any(Date)
-        }))
-      }
+          updatedAt: expect.any(Date),
+        })),
+      };
 
-      const posts = await postDao.findAll({
-        limit: 10,
-        offset: 0
-      }, [['title', 'asc']]);
+      const posts = await postDao.findAll(
+        {
+          limit: 10,
+          offset: 0,
+        },
+        [["title", "asc"]],
+      );
 
       expect(posts).toStrictEqual(expectedResult);
     });
@@ -79,14 +81,17 @@ describe("postDao", () => {
           title: `title ${i}`,
           content: `content ${i}`,
           createdAt: expect.any(Date),
-          updatedAt: expect.any(Date)
-        }))
-      }
+          updatedAt: expect.any(Date),
+        })),
+      };
 
-      const posts = await postDao.findAll({
-        limit: 5,
-        offset: 0
-      }, [['title', 'asc']]);
+      const posts = await postDao.findAll(
+        {
+          limit: 5,
+          offset: 0,
+        },
+        [["title", "asc"]],
+      );
 
       expect(posts).toStrictEqual(expectedResult);
     });
@@ -94,19 +99,24 @@ describe("postDao", () => {
     test("should return sorted posts", async () => {
       const expectedResult = {
         count: 10,
-        data: reverse(Array.from({ length: 10 }, (_, i) => ({
-          id: i + 1,
-          title: `title ${i}`,
-          content: `content ${i}`,
-          createdAt: expect.any(Date),
-          updatedAt: expect.any(Date)
-        })))
-      }
+        data: reverse(
+          Array.from({ length: 10 }, (_, i) => ({
+            id: i + 1,
+            title: `title ${i}`,
+            content: `content ${i}`,
+            createdAt: expect.any(Date),
+            updatedAt: expect.any(Date),
+          })),
+        ),
+      };
 
-      const posts = await postDao.findAll({
-        limit: 10,
-        offset: 0
-      }, [['title', 'desc']]);
+      const posts = await postDao.findAll(
+        {
+          limit: 10,
+          offset: 0,
+        },
+        [["title", "desc"]],
+      );
 
       expect(posts).toStrictEqual(expectedResult);
     });
@@ -115,10 +125,10 @@ describe("postDao", () => {
   describe("findById", () => {
     let id: number;
     beforeEach(async () => {
-      ;({ id } = (await postDao.create({
+      ({ id } = await postDao.create({
         title: "title",
-        content: "content"
-      })));
+        content: "content",
+      }));
     });
 
     test("should return a post", async () => {
@@ -129,7 +139,7 @@ describe("postDao", () => {
         title: "title",
         content: "content",
         createdAt: expect.any(Date),
-        updatedAt: expect.any(Date)
+        updatedAt: expect.any(Date),
       });
     });
 
@@ -143,16 +153,16 @@ describe("postDao", () => {
   describe("update", () => {
     let id: number;
     beforeEach(async () => {
-      ;({ id } = (await postDao.create({
+      ({ id } = await postDao.create({
         title: "title",
-        content: "content"
-      })));
+        content: "content",
+      }));
     });
 
     test("should update a post", async () => {
       const updatedPost = await postDao.update(id, {
         title: "new title",
-        content: "new content"
+        content: "new content",
       });
 
       expect(updatedPost).toEqual({
@@ -160,14 +170,14 @@ describe("postDao", () => {
         title: "new title",
         content: "new content",
         createdAt: expect.any(Date),
-        updatedAt: expect.any(Date)
+        updatedAt: expect.any(Date),
       });
     });
 
     test("should return undefined if post is not found", async () => {
       const post = await postDao.update(2, {
         title: "new title",
-        content: "new content"
+        content: "new content",
       });
 
       expect(post).toBeUndefined();
@@ -177,10 +187,10 @@ describe("postDao", () => {
   describe("delete", () => {
     let id: number;
     beforeEach(async () => {
-      ;({ id } = (await postDao.create({
+      ({ id } = await postDao.create({
         title: "title",
-        content: "content"
-      })));
+        content: "content",
+      }));
     });
 
     test("should delete a post", async () => {
@@ -191,7 +201,7 @@ describe("postDao", () => {
         title: "title",
         content: "content",
         createdAt: expect.any(Date),
-        updatedAt: expect.any(Date)
+        updatedAt: expect.any(Date),
       });
 
       const deletedPost = await postDao.findById(id);
@@ -204,5 +214,4 @@ describe("postDao", () => {
       expect(post).toBeUndefined();
     });
   });
-
 });

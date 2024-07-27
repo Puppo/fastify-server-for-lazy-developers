@@ -1,18 +1,21 @@
-import { kebabCase } from 'case-anything'
-import { exec } from 'child_process'
-import { Kysely, sql } from "kysely"
-import { DB } from "kysely-codegen"
-import { setInterval } from 'timers/promises'
-import { buildDbConfig, DatabaseConnectionsConfig } from "../src/infrastructure/env/dbConfig.js"
-import { createDbConnection } from "../src/infrastructure/plugins/database-connections.js"
+import { kebabCase } from "case-anything";
+import { exec } from "child_process";
+import { Kysely, sql } from "kysely";
+import { DB } from "kysely-codegen";
+import { setInterval } from "timers/promises";
+import {
+  buildDbConfig,
+  DatabaseConnectionsConfig,
+} from "../src/infrastructure/env/dbConfig.js";
+import { createDbConnection } from "../src/infrastructure/plugins/database-connections.js";
 
-import Docker, { Container, ContainerInfo } from 'dockerode'
-import { config } from 'dotenv'
-import { prop } from 'rambda'
+import Docker, { Container, ContainerInfo } from "dockerode";
+import { config } from "dotenv";
+import { prop } from "rambda";
 
 const { parsed: parsedEnv = {} } = config();
 
-const CONTAINER_PREFIX = 'pgDockerController';
+const CONTAINER_PREFIX = "pgDockerController";
 const PG_IMAGE = `postgres:${process.env.POSTGRES_VERSION}-alpine`;
 
 const env = Object.entries(parsedEnv).map(([key, value]) => `${key}=${value}`);
@@ -20,13 +23,16 @@ const env = Object.entries(parsedEnv).map(([key, value]) => `${key}=${value}`);
 export default class PgDockerController {
   private static readonly dockerConnection: Docker = new Docker();
   private runningContainer?: Container;
-  private readonly dbConfig: DatabaseConnectionsConfig = buildDbConfig()
+  private readonly dbConfig: DatabaseConnectionsConfig = buildDbConfig();
   private readonly postgratorOpts = Object.entries({
-    ...{ driver: 'pg' },
+    ...{ driver: "pg" },
     ...this.dbConfig.default,
-  }).reduce((acc, [key, value]) => acc += ` --${kebabCase(key)} ${value}`, '--no-config')
-  public readonly db: Kysely<DB> = createDbConnection(this.dbConfig)
-  private tables: string[] = []
+  }).reduce(
+    (acc, [key, value]) => (acc += ` --${kebabCase(key)} ${value}`),
+    "--no-config",
+  );
+  public readonly db: Kysely<DB> = createDbConnection(this.dbConfig);
+  private tables: string[] = [];
 
   async setup() {
     this.runningContainer =
@@ -34,11 +40,11 @@ export default class PgDockerController {
         Image: PG_IMAGE,
         HostConfig: {
           PortBindings: {
-            '5432': [{ HostPort: `${this.dbConfig.default.port}` }],
+            "5432": [{ HostPort: `${this.dbConfig.default.port}` }],
           },
         },
         ExposedPorts: {
-          '5432': {},
+          "5432": {},
         },
         Env: env,
         name: `${CONTAINER_PREFIX}-${Date.now()}-${this.dbConfig.default.port}`,
@@ -50,7 +56,9 @@ export default class PgDockerController {
 
     await this.applyMigrations();
 
-    this.tables = (await this.db.introspection.getTables()).map(prop('name')).filter(name => name !== 'schemaversion')
+    this.tables = (await this.db.introspection.getTables())
+      .map(prop("name"))
+      .filter((name) => name !== "schemaversion");
   }
 
   private async waitPgBoot() {
@@ -61,7 +69,7 @@ export default class PgDockerController {
       });
       const isReady = logs
         ?.toString()
-        .includes('database system is ready to accept connections');
+        .includes("database system is ready to accept connections");
       if (isReady) {
         break;
       }
@@ -106,7 +114,11 @@ export default class PgDockerController {
 
   async reset() {
     await Promise.all(
-      this.tables.map(table => sql.raw(`TRUNCATE TABLE "${table}" RESTART IDENTITY CASCADE`).execute(this.db)),
+      this.tables.map((table) =>
+        sql
+          .raw(`TRUNCATE TABLE "${table}" RESTART IDENTITY CASCADE`)
+          .execute(this.db),
+      ),
     );
   }
 
@@ -117,7 +129,7 @@ export default class PgDockerController {
       });
     const deletePromises = containersList
       .filter(PgDockerController.isControlledContainer)
-      .map(container => container.Id)
+      .map((container) => container.Id)
       .map(
         PgDockerController.dockerConnection.getContainer,
         PgDockerController.dockerConnection,
@@ -129,7 +141,7 @@ export default class PgDockerController {
 
   private static isControlledContainer(container: ContainerInfo): boolean {
     return Boolean(
-      container.Names.find(name => name.includes(CONTAINER_PREFIX)),
+      container.Names.find((name) => name.includes(CONTAINER_PREFIX)),
     );
   }
 
