@@ -1,5 +1,5 @@
 import fastify, { FastifyInstance } from "fastify";
-import buildServer from "../../src/infrastructure/server.js";
+import buildServer from "../../src/server.js";
 
 export async function createServer(): Promise<FastifyInstance> {
   const app = fastify();

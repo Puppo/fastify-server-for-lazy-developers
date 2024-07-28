@@ -11,7 +11,7 @@ import {
   IPostRepository,
   Post,
   PostService,
-} from "../../src/application/index.js";
+} from "../../src/content/application/index.js";
 
 const mockPost: Post = {
   id: 1,

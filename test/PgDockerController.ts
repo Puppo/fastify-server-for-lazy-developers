@@ -6,8 +6,8 @@ import { setInterval } from "timers/promises";
 import {
   buildDbConfig,
   DatabaseConnectionsConfig,
-} from "../src/infrastructure/env/dbConfig.js";
-import { createDbConnection } from "../src/infrastructure/plugins/database-connections.js";
+} from "../src/commons/config/dbConfig.js";
+import { createDbConnection } from "../src/commons/infrastructure/plugins/database-connections.js";
 
 import Docker, { Container, ContainerInfo } from "dockerode";
 import { config } from "dotenv";

@@ -1,6 +1,6 @@
 import fastify from "fastify";
 import qs from "qs";
-import buildServer from "./infrastructure/server.js";
+import buildServer from "./server.js";
 
 async function run() {
   const app = fastify({
